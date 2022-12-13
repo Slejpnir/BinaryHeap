@@ -2,8 +2,10 @@
 //
 
 #include <iostream>
+#include <time.h>
+#include <chrono>
 
-const int MAX_SIZE = 100;
+const long int MAX_SIZE = 200000;
 
 struct Heap
 {
@@ -72,16 +74,41 @@ void heapify(Heap& heap, int index) {
 
 int main()
 {
+	const long int n = 100000;
+	int test[n];
+	for (int i = 0; i < n; i++)
+	{
+		test[i] = rand() % 100;
+	}
+	auto beginC = std::chrono::steady_clock::now();
+	time_t startT, endT;
+	time(&startT);
+	clock_t start = clock();
 	Heap heap;
 	init(heap);
-	int test[10] = { 2,5,34,76,4,23,12,45,812,0 };
-	for (int i = 0; i < 10; i++) {
+	
+	for (int i = 0; i < n; i++) {
 		heap.data[i] = test[i];
-		heap.size = 10;
+		
 	}
+	heap.size = n;
 	buildHeap(heap);
-	printHeap(heap);
-    std::cout << "Hello World!\n";
+	clock_t end = clock();
+	time(&endT);
+	auto endC = std::chrono::steady_clock::now();
+	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+	
+	//std::cout << end << " " << start << std::endl;
+	std::cout << seconds;
+	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(endC - beginC);
+
+	
+	
+	double secondsT = difftime(endT, startT);
+	std::cout << std::endl << secondsT;
+	std::cout << std::endl << elapsed_ms.count();
+	//printHeap(heap);
+    //std::cout << "Hello World!\n";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
